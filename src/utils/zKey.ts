@@ -5,8 +5,6 @@ import * as fs from 'fs';
 const { zKey } = require('snarkjs');
 const { plonk } = require('snarkjs');
 const { getCurveFromName } = require('./curves');
-const util = require('util');
-const exec = util.promisify(require('child_process').exec);
 
 export const genGrothZKey = async (
   outputDir: string,
@@ -61,14 +59,6 @@ export const genGrothZKey = async (
     '0x0102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f',
     10,
   );
-
-  // TODO: this must node take place from shell, quick fix for now
-  await exec(
-    `snarkjs zkey beacon ${zKeyPath_0003} ${zKeyFinal} 0102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f 10 -n="Final Beacon phase2"`,
-  );
-  // if(stderr){
-  //     throw new Error(stderr)
-  // }
 
   await zKey.verifyFromR1cs(r1cs, powerofTauPath, zKeyFinal);
   return;
